@@ -1,0 +1,51 @@
+// Pipeline CI/CD MFS Stock v4 — tests automatisés réels, audit bloquant, image Docker testée
+pipeline {
+    agent any
+    environment {
+        IMAGE = 'mfs-stock'
+        TAG   = "${BUILD_NUMBER}"
+    }
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        timeout(time: 20, unit: 'MINUTES')
+        timestamps()
+    }
+    stages {
+        stage('Checkout')      { steps { checkout scm } }
+        stage('Dépendances')   { steps { sh 'npm ci' } }
+        stage('Audit sécurité') {
+            // Bloquant : le build échoue si une vulnérabilité HIGH/CRITICAL touche la production
+            steps { sh 'npm audit --omit=dev --audit-level=high' }
+        }
+        stage('Tests') {
+            steps { sh 'npm run test:coverage' }
+            post { always { archiveArtifacts artifacts: 'coverage/**', allowEmptyArchive: true } }
+        }
+        stage('Build image') {
+            steps { sh "docker build -t ${IMAGE}:${TAG} -t ${IMAGE}:latest ." }
+        }
+        stage('Smoke test') {
+            steps {
+                sh """
+                  docker rm -f smoke-${TAG} || true
+                  docker run -d --name smoke-${TAG} -p 3099:3001 -e JWT_SECRET=jenkins-smoke ${IMAGE}:${TAG}
+                  for i in \$(seq 1 20); do curl -fs http://localhost:3099/api/health && exit 0; sleep 2; done
+                  exit 1
+                """
+            }
+            post { always { sh "docker rm -f smoke-${TAG} || true" } }
+        }
+        stage('Déploiement') {
+            when { branch 'main' }
+            steps {
+                withCredentials([file(credentialsId: 'mfs-env', variable: 'ENV_FILE')]) {
+                    sh 'cp "$ENV_FILE" .env && docker compose up -d --build'
+                }
+            }
+        }
+    }
+    post {
+        success { echo "✅ Build ${TAG} validé" }
+        failure { echo "❌ Build ${TAG} en échec" }
+    }
+}

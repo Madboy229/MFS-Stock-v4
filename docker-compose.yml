@@ -1,0 +1,15 @@
+services:
+  app:
+    build: .
+    container_name: mfs-stock
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    env_file: .env          # JWT_SECRET obligatoire — aucune valeur par défaut en clair
+    environment:
+      - DB_STORAGE=/app/data/mfs_stock.sqlite
+    volumes:
+      - mfs_data:/app/data  # persistance SQLite
+
+volumes:
+  mfs_data:

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - MFS SARL</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body.dashboard-page {
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('stats.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            margin: 2rem auto;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.98) !important;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stats-grid .stat-card {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Bouton de déconnexion en rouge */
+        .nav-links li a[onclick="logout()"] {
+            background-color: #e74c3c !important;
+            color: white !important;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            text-decoration: none !important;
+            transition: background-color 0.3s ease;
+        }
+        
+        .nav-links li a[onclick="logout()"]:hover {
+            background-color: #c0392b !important;
+        }
+    </style>
+</head>
+<body class="dashboard-page">
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo"><a href="index.html" style="text-decoration: none; color: inherit;">MFS SARL</a></div>
+            <ul class="nav-links">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="products.html">Produits</a></li>
+                <li><a href="history.html">Historique</a></li>
+                <li><a href="profile.html">Profil</a></li>
+                <li><a href="#" onclick="logout()">Déconnexion</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 style="margin-bottom: 2rem; color: var(--bleu);">Dashboard - Stock en temps réel</h1>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="total-products">-</div>
+                <div class="stat-label">Produits total</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="total-stock">-</div>
+                <div class="stat-label">Quantité totale</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="low-stock">-</div>
+                <div class="stat-label">Stock faible</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="recent-movements">-</div>
+                <div class="stat-label">Mouvements aujourd'hui</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 style="margin-bottom: 1rem; color: var(--bleu);">Stock actuel par produit</h3>
+            <div class="table-container">
+                <table id="stock-table">
+                    <thead>
+                        <tr>
+                            <th>Produit</th>
+                            <th>Quantité</th>
+                            <th>Catégorie</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stock-tbody">
+                        <tr>
+                            <td colspan="5" style="text-align: center;">Chargement...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 style="margin-bottom: 0.5rem; color: var(--bleu);">Aide au réapprovisionnement (30 derniers jours)</h3>
+            <p style="margin-bottom: 1rem; color: #555; font-size: 0.9rem;" id="scope-label">Couverture = stock ÷ consommation moyenne journalière. Quantité suggérée pour couvrir 30 jours + seuil minimum.</p>
+            <div class="table-container">
+                <table id="insights-table">
+                    <thead>
+                        <tr>
+                            <th>Produit</th>
+                            <th>Stock</th>
+                            <th>Sorties / jour</th>
+                            <th>Couverture</th>
+                            <th>Statut</th>
+                            <th>À commander</th>
+                        </tr>
+                    </thead>
+                    <tbody id="insights-tbody">
+                        <tr><td colspan="6" style="text-align: center;">Chargement...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p style="margin-top: 1rem;"><a href="/api/stock/export/current.csv" id="export-stock" class="btn btn-secondary">Exporter le stock (CSV)</a></p>
+        </div>
+        <div class="card">
+            <h3 style="margin-bottom: 1rem; color: var(--bleu);">Derniers mouvements</h3>
+            <div class="table-container">
+                <table id="movements-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Produit</th>
+                            <th>Type</th>
+                            <th>Quantité</th>
+                            <th>Utilisateur</th>
+                        </tr>
+                    </thead>
+                    <tbody id="movements-tbody">
+                        <tr>
+                            <td colspan="5" style="text-align: center;">Chargement...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal overlay styles -->
+    <style>
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            max-width: 400px;
+            width: 90%;
+        }
+        
+        .modal-content h3 {
+            margin-bottom: 1rem;
+            color: var(--bleu);
+        }
+    </style>
+
+    <script src="js/api.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

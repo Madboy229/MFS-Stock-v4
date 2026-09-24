@@ -1,0 +1,9 @@
+node_modules
+.env
+*.sqlite
+coverage
+tests
+.git
+.github
+jenkins
+docs

@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MFS SARL - Gestion de Stock</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body.homepage {
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('ac.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+        
+        .hero-section {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-banner {
+                grid-template-columns: 1fr !important;
+                text-align: center;
+            }
+            .hero-banner h1 {
+                font-size: 2rem !important;
+            }
+            .hero-banner > div:last-child {
+                order: -1;
+            }
+            
+            /* Responsive pour les sections commerciales */
+            .hero-banner + div > div {
+                grid-template-columns: 1fr !important;
+                gap: 1.5rem !important;
+            }
+            
+            /* Responsive pour la newsletter */
+            .newsletter-grid {
+                grid-template-columns: 1fr !important;
+                text-align: center !important;
+                gap: 2rem !important;
+            }
+            .newsletter-form {
+                flex-direction: column !important;
+                padding: 1rem !important;
+                border-radius: 20px !important;
+            }
+            .newsletter-form input {
+                margin-bottom: 1rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body class="homepage">
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo"><a href="index.html" style="text-decoration: none; color: inherit;">MFS SARL</a></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="login.html" class="btn btn-primary">Se connecter</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Section Hero inspirée de l'image -->
+        <div class="hero-banner" style="background: rgba(255, 255, 255, 0.95); border-radius: 20px; padding: 4rem 2rem; margin-bottom: 4rem; display: grid; grid-template-columns: 1fr 400px; gap: 3rem; align-items: center; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);">
+            <div>
+                <div style="background: #FEF3C7; color: #92400E; padding: 0.5rem 1rem; border-radius: 25px; display: inline-block; font-size: 0.9rem; font-weight: 600; margin-bottom: 1.5rem;">
+                    HIGH-QUALITY FOOD
+                </div>
+                <h1 style="font-size: 3rem; font-weight: 700; color: #1F2937; margin-bottom: 1rem; line-height: 1.1;">
+                    Connecting<br>
+                    Global Food Brands<br>
+                    To <span style="color: #F59E0B;">Benin's Markets</span>
+                </h1>
+                <p style="font-size: 1.1rem; color: #6B7280; margin-bottom: 2rem; line-height: 1.6;">
+                    MFS SARL Is A Family-Run Business Based In Cotonou, Benin. We Specialize In Importing And Distributing High-Quality Food Products Such As Rice, Vegetable Oil, Sugar, And Flour To Markets Across The Country.
+                </p>
+                <p style="font-style: italic; color: #6B7280; margin-bottom: 2rem;">
+                    Supplying Retailers, Wholesalers, And Food Services Since 2025
+                </p>
+                <a href="#contact" style="background: #10B981; color: white; padding: 1rem 2rem; border-radius: 50px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s ease;">
+                    Get In Touch 
+                    <span style="background: rgba(255,255,255,0.2); border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">→</span>
+                </a>
+            </div>
+            <div style="position: relative;">
+                <div style="width: 350px; height: 350px; background: url('ac.jpg') center/cover; border-radius: 50%; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.2);">
+                    <div style="position: absolute; top: 20px; right: 20px; background: white; border-radius: 50%; padding: 1rem; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+                        <div style="width: 40px; height: 40px; background: #F59E0B; border-radius: 50%;"></div>
+                    </div>
+                    <div style="position: absolute; bottom: 20px; left: 20px; background: white; border-radius: 50%; padding: 1rem; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+                        <div style="width: 40px; height: 40px; background: #10B981; border-radius: 50%;"></div>
+                    </div>
+                    <div style="position: absolute; right: 10px; bottom: 100px; background: white; border-radius: 50%; padding: 1rem; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+                        <div style="width: 40px; height: 40px; background: #EF4444; border-radius: 50%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Nos Produits -->
+        <div style="margin-bottom: 3rem;">
+            <h2 style="text-align: center; color: white; margin-bottom: 2rem; font-size: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">Nos Produits de Qualité</h2>
+            
+            <div class="products-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+                
+                <!-- Riz blanc de qualité -->
+                <div class="product-card" style="background: rgba(255, 255, 255, 0.95); border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); transition: transform 0.3s ease;">
+                    <div style="height: 200px; background: url('riz.jpg') center/cover; position: relative;">
+                        <div style="position: absolute; top: 10px; right: 10px; background: var(--primary); color: white; padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold;">Premium</div>
+                    </div>
+                    <div style="padding: 1.5rem;">
+                        <h3 style="color: var(--primary); margin-bottom: 0.5rem; font-size: 1.3rem;">Riz Blanc de Qualité</h3>
+                        <p style="color: #666; margin-bottom: 1rem; line-height: 1.6;">
+                            Riz blanc premium importé directement d'Asie. Grains longs et parfumés, idéal pour tous vos plats traditionnels. Qualité supérieure garantie, conditionné en sacs de 25kg pour vos besoins familiaux ou commerciaux.
+                        </p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="color: var(--primary); font-weight: bold; font-size: 1.1rem;">Sac 25kg</span>
+                            <span style="background: var(--secondary); color: white; padding: 5px 10px; border-radius: 15px; font-size: 0.9rem;">En stock</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sucre blanc cristallisé -->
+                <div class="product-card" style="background: rgba(255, 255, 255, 0.95); border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); transition: transform 0.3s ease;">
+                    <div style="height: 200px; background: url('sucre.jpg') center/cover; position: relative;">
+                        <div style="position: absolute; top: 10px; right: 10px; background: var(--warning); color: white; padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold;">Populaire</div>
+                    </div>
+                    <div style="padding: 1.5rem;">
+                        <h3 style="color: var(--primary); margin-bottom: 0.5rem; font-size: 1.3rem;">Sucre Blanc Cristallisé</h3>
+                        <p style="color: #666; margin-bottom: 1rem; line-height: 1.6;">
+                            Sucre blanc pur et cristallisé, parfait pour la pâtisserie, les boissons et la cuisine. Cristaux fins et uniformes qui se dissolvent rapidement. Conditionné en sacs de 50kg pour répondre à tous vos besoins.
+                        </p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="color: var(--primary); font-weight: bold; font-size: 1.1rem;">Sac 50kg</span>
+                            <span style="background: var(--secondary); color: white; padding: 5px 10px; border-radius: 15px; font-size: 0.9rem;">En stock</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Huile végétale pure -->
+                <div class="product-card" style="background: rgba(255, 255, 255, 0.95); border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); transition: transform 0.3s ease;">
+                    <div style="height: 200px; background: url('huile.jpg') center/cover; position: relative;">
+                        <div style="position: absolute; top: 10px; right: 10px; background: var(--secondary); color: white; padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold;">Bio</div>
+                    </div>
+                    <div style="padding: 1.5rem;">
+                        <h3 style="color: var(--primary); margin-bottom: 0.5rem; font-size: 1.3rem;">Huile Végétale Pure</h3>
+                        <p style="color: #666; margin-bottom: 1rem; line-height: 1.6;">
+                            Huile végétale 100% pure, extraite de graines sélectionnées. Idéale pour la friture, la cuisson et l'assaisonnement. Riche en vitamines et au goût neutre. Conditionnée en bidons de 20L pratiques et hygiéniques.
+                        </p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="color: var(--primary); font-weight: bold; font-size: 1.1rem;">Bidon 20L</span>
+                            <span style="background: var(--secondary); color: white; padding: 5px 10px; border-radius: 15px; font-size: 0.9rem;">En stock</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Spaghetti premium -->
+                <div class="product-card" style="background: rgba(255, 255, 255, 0.95); border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); transition: transform 0.3s ease;">
+                    <div style="height: 200px; background: url('spaghetti.jpg') center/cover; position: relative;">
+                        <div style="position: absolute; top: 10px; right: 10px; background: var(--danger); color: white; padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold;">Nouveau</div>
+                    </div>
+                    <div style="padding: 1.5rem;">
+                        <h3 style="color: var(--primary); margin-bottom: 0.5rem; font-size: 1.3rem;">Spaghetti Premium</h3>
+                        <p style="color: #666; margin-bottom: 1rem; line-height: 1.6;">
+                            Pâtes spaghetti de qualité premium, fabriquées avec du blé dur de première qualité. Texture parfaite, cuisson homogène et goût authentique. Conditionnées en cartons de 12kg pour les professionnels et familles nombreuses.
+                        </p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="color: var(--primary); font-weight: bold; font-size: 1.1rem;">Carton 12kg</span>
+                            <span style="background: var(--warning); color: white; padding: 5px 10px; border-radius: 15px; font-size: 0.9rem;">Stock faible</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            </div>
+        </div>
+
+        <!-- Sections commerciales avec images intégrées -->
+        <div style="max-width: 1200px; margin: 0 auto 4rem auto; display: flex; flex-direction: column; gap: 3rem;">
+            
+            <!-- Pourquoi nous choisir -->
+            <div style="display: grid; grid-template-columns: 1fr 400px; gap: 3rem; align-items: center;">
+                <div class="card" style="padding: 2rem;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.4rem;">Pourquoi nous choisir</h3>
+                    <p style="margin-bottom: 1.5rem; color: #666; line-height: 1.6;">
+                        MFS SARL s'engage à vous fournir des produits de qualité supérieure avec un service client irréprochable.
+                    </p>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="padding: 0.75rem 0; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="color: var(--secondary); font-weight: bold;">✓</span>
+                            Plus de 15 ans d'expérience dans l'importation
+                        </li>
+                        <li style="padding: 0.75rem 0; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="color: var(--secondary); font-weight: bold;">✓</span>
+                            Produits certifiés et conformes aux normes internationales
+                        </li>
+                        <li style="padding: 0.75rem 0; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="color: var(--secondary); font-weight: bold;">✓</span>
+                            Livraison rapide dans tout le Bénin
+                        </li>
+                        <li style="padding: 0.75rem 0; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="color: var(--secondary); font-weight: bold;">✓</span>
+                            Prix compétitifs et conditions de paiement flexibles
+                        </li>
+                        <li style="padding: 0.75rem 0; display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="color: var(--secondary); font-weight: bold;">✓</span>
+                            Service client disponible 6j/7
+                        </li>
+                    </ul>
+                </div>
+                <div style="border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.1);">
+                    <img src="pourquoinouschoisir.png" alt="Pourquoi nous choisir" style="width: 100%; height: 300px; object-fit: cover;">
+                </div>
+            </div>
+
+            <!-- Nos services -->
+            <div style="display: grid; grid-template-columns: 400px 1fr; gap: 3rem; align-items: center;">
+                <div style="border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.1);">
+                    <img src="nosservices.png" alt="Nos services" style="width: 100%; height: 300px; object-fit: cover;">
+                </div>
+                <div class="card" style="padding: 2rem;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.4rem;">Nos services</h3>
+                    <p style="margin-bottom: 1.5rem; color: #666; line-height: 1.6;">
+                        Une gamme complète de services pour répondre à tous vos besoins d'approvisionnement.
+                    </p>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="padding: 0.75rem 0; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="color: var(--secondary); font-weight: bold;">✓</span>
+                            Importation directe depuis les pays producteurs
+                        </li>
+                        <li style="padding: 0.75rem 0; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="color: var(--secondary); font-weight: bold;">✓</span>
+                            Distribution en gros et demi-gros
+                        </li>
+                        <li style="padding: 0.75rem 0; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="color: var(--secondary); font-weight: bold;">✓</span>
+                            Stockage sécurisé dans nos entrepôts modernes
+                        </li>
+                        <li style="padding: 0.75rem 0; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="color: var(--secondary); font-weight: bold;">✓</span>
+                            Conditionnement personnalisé selon vos besoins
+                        </li>
+                        <li style="padding: 0.75rem 0; display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="color: var(--secondary); font-weight: bold;">✓</span>
+                            Conseils techniques et commerciaux
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Secteurs d'activité -->
+            <div style="display: grid; grid-template-columns: 1fr 400px; gap: 3rem; align-items: center;">
+                <div class="card" style="padding: 2rem;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.4rem;">Secteurs d'activité</h3>
+                    <p style="margin-bottom: 1.5rem; color: #666; line-height: 1.6;">
+                        Nous servons une clientèle variée à travers tout le territoire béninois.
+                    </p>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="padding: 0.75rem 0; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="color: var(--secondary); font-weight: bold;">✓</span>
+                            Restaurants et hôtels
+                        </li>
+                        <li style="padding: 0.75rem 0; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="color: var(--secondary); font-weight: bold;">✓</span>
+                            Supermarchés et épiceries
+                        </li>
+                        <li style="padding: 0.75rem 0; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="color: var(--secondary); font-weight: bold;">✓</span>
+                            Cantines scolaires et entreprises
+                        </li>
+                        <li style="padding: 0.75rem 0; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="color: var(--secondary); font-weight: bold;">✓</span>
+                            Grossistes et distributeurs
+                        </li>
+                        <li style="padding: 0.75rem 0; display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="color: var(--secondary); font-weight: bold;">✓</span>
+                            Particuliers (familles nombreuses)
+                        </li>
+                    </ul>
+                </div>
+                <div style="border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.1);">
+                    <img src="ac.jpg" alt="Secteurs d'activité" style="width: 100%; height: 300px; object-fit: cover;">
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulaire de contact -->
+        <div class="card" style="margin-bottom: 3rem;" id="contact">
+            <h3 style="color: var(--primary); margin-bottom: 1.5rem; text-align: center;">Contactez-nous</h3>
+            <p style="text-align: center; margin-bottom: 2rem; color: #666;">
+                Vous avez des questions ou souhaitez obtenir un devis ? N'hésitez pas à nous contacter !
+            </p>
+            
+            <form id="contactForm" style="max-width: 600px; margin: 0 auto;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                    <div class="form-group">
+                        <label for="nom" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Nom complet *</label>
+                        <input type="text" id="nom" name="nom" class="form-control" required style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px;">
+                    </div>
+                    <div class="form-group">
+                        <label for="entreprise" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Entreprise</label>
+                        <input type="text" id="entreprise" name="entreprise" class="form-control" style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px;">
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                    <div class="form-group">
+                        <label for="email" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Email *</label>
+                        <input type="email" id="email" name="email" class="form-control" required style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px;">
+                    </div>
+                    <div class="form-group">
+                        <label for="telephone" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Téléphone</label>
+                        <input type="tel" id="telephone" name="telephone" class="form-control" style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px;">
+                    </div>
+                </div>
+                
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label for="sujet" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Sujet *</label>
+                    <select id="sujet" name="sujet" class="form-control" required style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px;">
+                        <option value="">Sélectionnez un sujet</option>
+                        <option value="devis">Demande de devis</option>
+                        <option value="commande">Passer une commande</option>
+                        <option value="information">Demande d'information</option>
+                        <option value="partenariat">Proposition de partenariat</option>
+                        <option value="autre">Autre</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label for="message" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Message *</label>
+                    <textarea id="message" name="message" rows="5" class="form-control" required 
+                              placeholder="Décrivez votre demande en détail..."
+                              style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; resize: vertical;"></textarea>
+                </div>
+                
+                <div style="text-align: center;">
+                    <button type="submit" id="submitBtn" class="btn btn-primary" style="padding: 0.75rem 2rem; font-size: 1rem;">
+                        Envoyer le message
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Section accès application -->
+        <div class="card" style="text-align: center; margin-bottom: 3rem;">
+            <h3 style="color: var(--secondary); margin-bottom: 1rem;">Espace client professionnel</h3>
+            <p style="margin-bottom: 1.5rem; color: #666;">
+                Accédez à votre espace personnel pour gérer vos commandes, consulter les stocks et suivre vos livraisons
+            </p>
+            <a href="login.html" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;">
+                Se connecter à l'espace client
+            </a>
+        </div>
+    </div>
+
+    <!-- Section Newsletter -->
+    <div style="background: linear-gradient(135deg, #F59E0B 0%, #F97316 100%); padding: 4rem 2rem; margin-top: 3rem;">
+        <div class="container" style="max-width: 1000px; margin: 0 auto;">
+            <div class="newsletter-grid" style="display: grid; grid-template-columns: 1fr 500px; gap: 3rem; align-items: center;">
+                <div>
+                    <h2 style="color: white; font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; line-height: 1.2;">
+                        Subscribe To<br>
+                        Our Newsletter
+                    </h2>
+                    <p style="color: rgba(255,255,255,0.9); font-size: 1.1rem; line-height: 1.6;">
+                        Restez informé de nos dernières offres, nouveaux produits et actualités du marché alimentaire béninois. 
+                        Recevez des conseils exclusifs et des promotions réservées à nos abonnés.
+                    </p>
+                </div>
+                <div class="newsletter-form" style="background: white; border-radius: 60px; padding: 8px; display: flex; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                    <input 
+                        type="email" 
+                        placeholder="Enter Your Email address" 
+                        style="flex: 1; border: none; padding: 1rem 1.5rem; background: transparent; font-size: 1rem; outline: none; color: #666;"
+                        id="newsletter-email"
+                    >
+                    <button 
+                        onclick="subscribeNewsletter()"
+                        style="background: #10B981; color: white; border: none; padding: 1rem 2rem; border-radius: 50px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: all 0.3s ease;"
+                        onmouseover="this.style.background='#059669'"
+                        onmouseout="this.style.background='#10B981'"
+                    >
+                        Subscribe
+                        <span style="background: rgba(255,255,255,0.2); border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">→</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function subscribeNewsletter() {
+            const email = document.getElementById('newsletter-email').value;
+            if (!email) {
+                alert('Veuillez entrer votre adresse email');
+                return;
+            }
+            if (!email.includes('@')) {
+                alert('Veuillez entrer une adresse email valide');
+                return;
+            }
+            
+            // Simulation d'inscription
+            alert('Merci pour votre inscription à notre newsletter ! Vous recevrez bientôt nos dernières actualités.');
+            document.getElementById('newsletter-email').value = '';
+        }
+        
+        // Style responsive pour la newsletter
+        window.addEventListener('resize', function() {
+            const newsletterDiv = document.querySelector('[style*="grid-template-columns: 1fr 500px"]');
+            if (newsletterDiv && window.innerWidth <= 768) {
+                newsletterDiv.style.gridTemplateColumns = '1fr';
+                newsletterDiv.style.textAlign = 'center';
+            } else if (newsletterDiv) {
+                newsletterDiv.style.gridTemplateColumns = '1fr 500px';
+                newsletterDiv.style.textAlign = 'left';
+            }
+        });
+    </script>
+
+    <!-- Footer -->
+    <footer style="background: rgba(31, 41, 55, 0.95); color: white; padding: 3rem 0 1rem 0; margin-top: 3rem;">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+                
+                <!-- Informations entreprise -->
+                <div>
+                    <h4 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.2rem;">MFS SARL</h4>
+                    <p style="margin-bottom: 1rem; line-height: 1.6; color: #d1d5db;">
+                        Entreprise familiale spécialisée dans l'importation et la distribution de produits alimentaires de qualité depuis plus de 15 ans.
+                    </p>
+                    <div style="margin-bottom: 0.5rem;">
+                        <strong>RCCM :</strong> RB/COT/23/B/567
+                    </div>
+                    <div style="margin-bottom: 0.5rem;">
+                        <strong>IFU :</strong> 3202300234567
+                    </div>
+                </div>
+                
+                <!-- Contact -->
+                <div>
+                    <h4 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.2rem;">Contact</h4>
+                    <div style="margin-bottom: 0.75rem;">
+                        <strong>Adresse :</strong><br>
+                        Quartier Agla, Rue 123<br>
+                        Cotonou, Bénin
+                    </div>
+                    <div style="margin-bottom: 0.75rem;">
+                        <strong>Téléphone :</strong><br>
+                        +229 21 45 67 89<br>
+                        +229 97 12 34 56
+                    </div>
+                    <div style="margin-bottom: 0.75rem;">
+                        <strong>Email :</strong><br>
+                        contact@mfs-sarl.bj<br>
+                        commercial@mfs-sarl.bj
+                    </div>
+                </div>
+                
+                <!-- Liens utiles -->
+                <div>
+                    <h4 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.2rem;">Liens utiles</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 0.5rem;">
+                            <a href="#" style="color: #d1d5db; text-decoration: none;">Catalogue produits</a>
+                        </li>
+                        <li style="margin-bottom: 0.5rem;">
+                            <a href="#" style="color: #d1d5db; text-decoration: none;">Conditions de vente</a>
+                        </li>
+                        <li style="margin-bottom: 0.5rem;">
+                            <a href="#" style="color: #d1d5db; text-decoration: none;">Politique de confidentialité</a>
+                        </li>
+                        <li style="margin-bottom: 0.5rem;">
+                            <a href="#" style="color: #d1d5db; text-decoration: none;">Mentions légales</a>
+                        </li>
+                        <li style="margin-bottom: 0.5rem;">
+                            <a href="login.html" style="color: var(--primary); text-decoration: none;">Espace client</a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Horaires -->
+                <div>
+                    <h4 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.2rem;">Horaires d'ouverture</h4>
+                    <div style="margin-bottom: 0.75rem;">
+                        <strong>Lundi - Vendredi :</strong><br>
+                        7h30 - 18h00
+                    </div>
+                    <div style="margin-bottom: 0.75rem;">
+                        <strong>Samedi :</strong><br>
+                        8h00 - 16h00
+                    </div>
+                    <div style="margin-bottom: 0.75rem;">
+                        <strong>Dimanche :</strong><br>
+                        Fermé
+                    </div>
+                    <div style="margin-top: 1rem; padding: 1rem; background: rgba(37, 99, 235, 0.1); border-radius: 8px;">
+                        <strong style="color: var(--primary);">Livraisons :</strong><br>
+                        Du lundi au samedi<br>
+                        Zone Cotonou-Porto-Novo
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Copyright -->
+            <div style="border-top: 1px solid #374151; padding-top: 1.5rem; text-align: center; color: #9ca3af;">
+                <p>&copy; 2025 MFS SARL. Tous droits réservés. | Développé par l'équipe technique MFS SARL</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Gestion du formulaire de contact
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.textContent;
+            
+            // Désactiver le bouton et changer le texte
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Envoi en cours...';
+            submitBtn.style.backgroundColor = '#ccc';
+            
+            try {
+                // Récupérer les données du formulaire
+                const formData = {
+                    name: document.getElementById('nom').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('telephone').value,
+                    company: document.getElementById('entreprise').value,
+                    subject: document.getElementById('sujet').value,
+                    message: document.getElementById('message').value + `\n\nSujet: ${document.getElementById('sujet').value}`
+                };
+                
+                // Envoyer la requête
+                const response = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    // Succès
+                    alert('✅ Message envoyé avec succès ! Nous vous répondrons dans les plus brefs délais.');
+                    document.getElementById('contactForm').reset();
+                } else {
+                    // Erreur
+                    alert('❌ Erreur lors de l\'envoi : ' + (result.error || 'Erreur inconnue'));
+                }
+                
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('❌ Erreur de connexion. Veuillez réessayer plus tard.');
+            } finally {
+                // Réactiver le bouton
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+                submitBtn.style.backgroundColor = '';
+            }
+        });
+    </script>
+</body>
+</html>

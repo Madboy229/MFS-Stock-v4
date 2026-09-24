@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historique des mouvements - MFS SARL</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body.history-page {
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('history.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            margin: 2rem auto;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.98) !important;
+            backdrop-filter: blur(10px);
+        }
+        
+        .filters-card {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+        }
+        
+        .table-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Bouton de déconnexion en rouge */
+        .nav-links li a[onclick="logout()"] {
+            background-color: #e74c3c !important;
+            color: white !important;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            text-decoration: none !important;
+            transition: background-color 0.3s ease;
+        }
+        
+        .nav-links li a[onclick="logout()"]:hover {
+            background-color: #c0392b !important;
+        }
+    </style>
+</head>
+<body class="history-page">
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo"><a href="index.html" style="text-decoration: none; color: inherit;">MFS SARL</a></div>
+            <ul class="nav-links">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="products.html">Produits</a></li>
+                <li><a href="history.html">Historique</a></li>
+                <li><a href="profile.html">Profil</a></li>
+                <li><a href="#" onclick="logout()">Déconnexion</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 style="margin-bottom: 2rem; color: var(--bleu);">Historique des mouvements de stock</h1>
+        
+        <div class="card">
+            <h3 style="margin-bottom: 1rem;">Filtres</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                <div class="form-group">
+                    <label>Date début :</label>
+                    <input type="date" id="dateStart" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Date fin :</label>
+                    <input type="date" id="dateEnd" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Produit :</label>
+                    <select id="productFilter" class="form-control">
+                        <option value="">Tous les produits</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Type :</label>
+                    <select id="typeFilter" class="form-control">
+                        <option value="">Tous les types</option>
+                        <option value="entry">Entrées</option>
+                        <option value="exit">Sorties</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="applyFilters()">Appliquer les filtres</button>
+            <button class="btn btn-warning" onclick="resetFilters()" style="margin-left: 0.5rem;">Réinitialiser</button>
+            <button class="btn btn-success" onclick="exportHistory()" style="margin-left: 0.5rem;">Exporter CSV</button>
+        </div>
+
+        <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h3>Mouvements (<span id="totalMovements">0</span>)</h3>
+                <div>
+                    <button class="btn btn-primary" onclick="loadMovements(1)">Actualiser</button>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <table id="history-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortBy('date')" style="cursor: pointer;">Date 📅</th>
+                            <th onclick="sortBy('product')" style="cursor: pointer;">Produit 📦</th>
+                            <th onclick="sortBy('type')" style="cursor: pointer;">Type 🔄</th>
+                            <th onclick="sortBy('quantity')" style="cursor: pointer;">Quantité 📊</th>
+                            <th>Motif</th>
+                            <th onclick="sortBy('user')" style="cursor: pointer;">Effectué par 👤</th>
+                            <th>Stock après</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-tbody">
+                        <tr>
+                            <td colspan="7" style="text-align: center;">Chargement...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div id="pagination" style="margin-top: 2rem; text-align: center;">
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/history.js"></script>
+</body>
+</html>
